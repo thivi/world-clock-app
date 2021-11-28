@@ -1,0 +1,23 @@
+name: Deploy to stage
+
+on:
+  workflow_dispatch:
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '14.x'
+
+      - uses: actions/checkout@v2
+      - run: |
+          export REACT_APP_API_ENDPOINT=https://stage-world-clock.azure-api.net/stage-world-clock
+          npm ci
+          npm run build
+      - uses: bacongobbler/azure-blob-storage-upload@v1.2.0
+        with:
+          source_dir: 'build'
+          container_name: '$web'
+          connection_string: ${{ secrets.ConnectionStringStage }}
+          sync: true
