@@ -17,7 +17,7 @@ function App() {
                 setTime(response);
             })
             .catch((error: any) => {
-                alert(error);
+                alert("We were unable to get the current time for the region you entered. :(");
             })
             .finally(() => {
                 setLoading(false);
